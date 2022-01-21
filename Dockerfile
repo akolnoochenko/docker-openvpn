@@ -8,12 +8,13 @@ ENV APP_PERSIST_DIR /opt/${APP_NAME}_data
 
 WORKDIR ${APP_INSTALL_PATH}
 
+RUN apk add --no-cache openvpn easy-rsa bash netcat-openbsd zip dumb-init
+
 COPY scripts .
 COPY config ./config
 COPY VERSION ./config
 
-RUN apk add --no-cache openvpn easy-rsa bash netcat-openbsd zip dumb-init && \
-    mkdir -p ${APP_PERSIST_DIR} && \
+RUN mkdir -p ${APP_PERSIST_DIR} && \
     # Copy FROM ./scripts/server/conf TO /etc/openvpn/server.conf in DockerFile
     cd ${APP_INSTALL_PATH} && \
     cp config/server.conf /etc/openvpn/server.conf
